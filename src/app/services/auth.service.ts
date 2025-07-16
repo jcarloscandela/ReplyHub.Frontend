@@ -18,4 +18,8 @@ export class AuthService {
   refreshToken(refreshToken: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/refresh-token`, { refreshToken });
   }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
 }
