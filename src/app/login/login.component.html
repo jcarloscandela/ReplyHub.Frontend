@@ -1,0 +1,20 @@
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <p-panel header="Login">
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="username">Username</label>
+          <input id="username" type="text" pInputText formControlName="username" autocomplete="username" />
+        </div>
+        <div class="p-field">
+          <label for="password">Password</label>
+          <input id="password" type="password" pPassword formControlName="password" autocomplete="current-password" />
+        </div>
+        <div *ngIf="error" class="p-mb-2">
+          <p-message severity="error" text="{{ error }}"></p-message>
+        </div>
+        <button pButton type="submit" label="Login" [loading]="loading" [disabled]="loginForm.invalid || loading"></button>
+      </div>
+    </p-panel>
+  </form>
+</div>
