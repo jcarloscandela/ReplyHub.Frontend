@@ -10,6 +10,8 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,8 @@ import { MessageModule } from 'primeng/message';
     PasswordModule,
     ButtonModule,
     PanelModule,
-    MessageModule
+    MessageModule,
+    ToastModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -33,7 +36,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     public authService: AuthService,
     public authStore: AuthStore,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -48,6 +52,13 @@ export class LoginComponent {
     const payload: LoginRequest = this.loginForm.value;
     this.authService.login(payload).subscribe({
       next: () => this.router.navigate(['/']),
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Login Failed',
+          detail: 'Invalid username or password'
+        });
+      }
     });
   }
 }
