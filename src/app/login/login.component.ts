@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../services/auth.service';
 import { AuthStore } from '../store/auth.store';
 import { LoginRequest } from '../models/auth.model';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -27,13 +28,12 @@ import { MessageModule } from 'primeng/message';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  loading = false;
-  error: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
-    private authStore: AuthStore
+    public authService: AuthService,
+    public authStore: AuthStore,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -45,22 +45,9 @@ export class LoginComponent {
     if (this.loginForm.invalid) {
       return;
     }
-    this.loading = true;
-    this.error = null;
     const payload: LoginRequest = this.loginForm.value;
     this.authService.login(payload).subscribe({
-      next: (res) => {
-        this.authStore.setTokens({
-          accessToken: res.accessToken,
-          refreshToken: res.refreshToken,
-          userId: res.user.id.toString()
-        });
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = err?.error?.message || 'Login failed';
-        this.loading = false;
-      }
+      next: () => this.router.navigate(['/']),
     });
   }
 }

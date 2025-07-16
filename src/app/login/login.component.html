@@ -10,10 +10,10 @@
           <label for="password">Password</label>
           <input id="password" type="password" pPassword formControlName="password" autocomplete="current-password" />
         </div>
-        <div *ngIf="error" class="p-mb-2">
-          <p-message severity="error" text="{{ error }}"></p-message>
+        <div *ngIf="authStore.error()" class="p-mb-2">
+          <p-message severity="error" [text]="authStore.error() ?? undefined"></p-message>
         </div>
-        <button pButton type="submit" label="Login" [loading]="loading" [disabled]="loginForm.invalid || loading"></button>
+        <button pButton type="submit" label="Login" [loading]="authStore.loading()" [disabled]="loginForm.invalid || authStore.loading()"></button>
       </div>
     </p-panel>
   </form>
