@@ -6,34 +6,28 @@ import { PostListDto } from '../models/auth.model';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { AuthStore } from '../store/auth.store';
+import { ShortContentPipe } from './short-content.pipe';
+import { PostsStore } from '../store/posts.store';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, CardModule, ButtonModule],
+imports: [CommonModule, FormsModule, CardModule, ButtonModule, ShortContentPipe],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  posts: PostListDto[] = [];
   showCreatePostDialog = false;
   newPostTitle = '';
   newPostContent = '';
 
   constructor(
-    private postService: PostService,
+    public postsStore: PostsStore,
     private authStore: AuthStore
   ) {}
 
   ngOnInit(): void {
-    this.postService.getPosts().subscribe({
-      next: (data) => this.posts = data,
-      error: () => this.posts = []
-    });
-  }
-
-  getShortContent(content: string): string {
-    return content.length > 120 ? content.substring(0, 120) + '...' : content;
+    this.postsStore.fetchPosts();
   }
 
   openCreatePostDialog(): void {
@@ -53,15 +47,7 @@ export class HomeComponent implements OnInit {
       title: this.newPostTitle,
       content: this.newPostContent
     };
-    this.postService.createPost(post).subscribe({
-      next: () => {
-        this.closeCreatePostDialog();
-        this.postService.getPosts().subscribe({
-          next: (data) => this.posts = data,
-          error: () => {}
-        });
-      },
-      error: () => {}
-    });
+    this.postsStore.createPost(post);
+    this.closeCreatePostDialog();
   }
 }

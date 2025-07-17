@@ -27,7 +27,7 @@
 </div>
 
 <div class="posts-list">
-  <p-card *ngFor="let post of posts" styleClass="post-card">
+  <p-card *ngFor="let post of postsStore.posts()" styleClass="post-card">
     <ng-template pTemplate="header">
       <div class="post-header">
         <span class="post-title">{{ post.title }}</span>
@@ -35,7 +35,7 @@
       </div>
     </ng-template>
     <div class="post-content">
-      {{ getShortContent(post.content) }}
+      {{ post.content | shortContent }}
     </div>
     <div class="post-footer">
       <span class="post-date">{{ post.timestamp | date:'short' }}</span>
