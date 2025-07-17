@@ -17,6 +17,15 @@ export interface LoginResponse {
 
 export interface UserDto {
   id: number;
-  diplayName: string;
+  displayName: string;
   username: string;
+}
+
+export interface PostListDto {
+  id: number;
+  title: string;
+  content: string;
+  timestamp: Date;
+  user: UserDto;
+  repliesCount: number;
 }

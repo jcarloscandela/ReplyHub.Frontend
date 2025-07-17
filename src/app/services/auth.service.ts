@@ -40,4 +40,8 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.authStore.accessToken;
   }
+
+  getAccessToken(): string | null {
+    return this.authStore.accessToken || null;
+  }
 }

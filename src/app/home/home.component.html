@@ -1,1 +1,17 @@
-Home
+<div class="posts-list">
+  <p-card *ngFor="let post of posts" styleClass="post-card">
+    <ng-template pTemplate="header">
+      <div class="post-header">
+        <span class="post-title">{{ post.title }}</span>
+        <span class="post-user">by {{ post.user.displayName }}</span>
+      </div>
+    </ng-template>
+    <div class="post-content">
+      {{ getShortContent(post.content) }}
+    </div>
+    <div class="post-footer">
+      <span class="post-date">{{ post.timestamp | date:'short' }}</span>
+      <span class="post-replies">Replies: {{ post.repliesCount }}</span>
+    </div>
+  </p-card>
+</div>
